@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('includes/header') %>
+
+        <div class="form-container">
+
+            <h2>로그인</h2>
+
+            <form id="loginForm" method="POST" action="/login">
+
+                <input type="text" name="user_id" placeholder="아이디" required>
+
+                <input type="password" name="password" placeholder="비밀번호" required>
+
+                <button type="submit">로그인</button>
+
+            </form>
+
+            <p>
+                계정이 없나요?
+                <a href="/register">회원가입</a>
+
+                <a href="/reset-password">비밀번호 변경</a>
+            </p>
+
+        </div>
+
+</body>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+
+        const res = await fetch('/login', {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        });
+
+        const data = await res.json();
+
+        if (data.message === 'wrong_password') {
+            alert('비밀번호가 틀렸습니다');
+        }
+        else if (data.message === 'no_user') {
+            alert('아이디가 없습니다');
+        }
+        else if (data.message === 'success') {
+            location.href = '/';
+        }
+    });
+</script>
+
+</html>

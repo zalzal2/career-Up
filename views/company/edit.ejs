@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회사 추가</title>
+
+    <link rel="stylesheet" href="/css/company.css">
+</head>
+<script>
+    function validateForm() {
+        const company = document.querySelector('input[name="company_name"]').value.trim();
+        const job = document.querySelector('input[name="job"]').value.trim();
+
+        if (!company || !job) {
+            alert("회사명과 직무를 입력해주세요.");
+            return false;
+        }
+
+        return true;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const select = document.getElementById("region");
+
+        const saved = "<%= data?.region || '' %>";
+
+        Object.entries(regionData).forEach(([province, cities]) => {
+
+            cities.forEach(city => {
+                const opt = document.createElement("option");
+
+                let value, text;
+
+                if (city === "전체") {
+                    value = `${province} 전체`;
+                    text = `${province} 전체`;
+                } else {
+                    value = `${province} ${city}`;
+                    text = `${province} ${city}`;
+                }
+
+                opt.value = value;
+                opt.textContent = text;
+
+                if (value === saved) {
+                    opt.selected = true;
+                }
+
+                select.appendChild(opt);
+            });
+        });
+    });
+</script>
+
+<body>
+
+    <div class="form-container">
+
+        <h1>회사 추가</h1>
+
+        <form action="<%= data ? '/company/update/' + data.id : '/company/add' %>" method="post">
+
+            <div class="input-box">
+                <label>회사명</label>
+                <input type="text" name="company_name" required value="<%= data ? data.company_name : '' %>">
+            </div>
+
+            <div class="input-box">
+
+                <label>업종</label>
+
+                <select name="industry">
+                    <option value="IT" <%=data && data.industry==='IT' ? 'selected' : '' %>>IT</option>
+                    <option value="금융" <%=data && data.industry==='금융' ? 'selected' : '' %>>금융</option>
+                    <option value="제조" <%=data && data.industry==='제조' ? 'selected' : '' %>>제조</option>
+                    <option value="서비스" <%=data && data.industry==='서비스' ? 'selected' : '' %>>서비스</option>
+                </select>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>직무</label>
+                <input type="text" name="job" value="<%= data ? data.job : '' %>">
+
+
+            </div>
+
+            <div class="input-box">
+
+                <label>연봉</label>
+                <input type="text" name="salary" value="<%= data ? data.salary : '' %>">
+
+            </div>
+
+            <div class="input-box">
+
+                <label>근무지역</label>
+
+                <select id="region" name="region"></select>
+
+                <script src="/js/region.js"></script>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>근무형태</label>
+
+                <select name="type">
+                    <option>정규직</option>
+                    <option>계약직</option>
+                    <option>인턴</option>
+
+                </select>
+
+            </div>
+
+            <div class="input-box">
+                <label>자격요건</label>
+                <textarea name="qualifications"><%= data ? data.qualifications : '' %></textarea>
+
+            </div>
+
+            <div class="input-box">
+                <label>우대사항</label>
+                <textarea name="advantage"><%= data ? data.advantage : '' %></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>복리후생</label>
+                <textarea name="benefits"><%= data ? data.benefits : '' %></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>진행상태</label>
+                <select name="status">
+                    <option value="지원 전" <%=data && data.status==='지원 전' ? 'selected' : '' %>>
+                        지원 전
+                    </option>
+
+                    <option value="지원 완료" <%=data && data.status==='지원 완료' ? 'selected' : '' %>>
+                        지원 완료
+                    </option>
+
+                    <option value="서류 합격" <%=data && data.status==='서류 합격' ? 'selected' : '' %>>
+                        서류 합격
+                    </option>
+
+                    <option value="과제/코딩테스트 합격" <%=data && data.status==='과제/코딩테스트 합격' ? 'selected' : '' %>>
+                        과제/코딩테스트 합격
+                    </option>
+
+                    <option value="1차 면접 합격" <%=data && data.status==='1차 면접 합격' ? 'selected' : '' %>>
+                        1차 면접 합격
+                    </option>
+
+                    <option value="2차 면접 합격" <%=data && data.status==='2차 면접 합격' ? 'selected' : '' %>>
+                        2차 면접 합격
+                    </option>
+
+                    <option value="3차 면접 합격" <%=data && data.status==='3차 면접 합격' ? 'selected' : '' %>>
+                        3차 면접 합격
+                    </option>
+
+                    <option value="최종 합격" <%=data && data.status==='최종 합격' ? 'selected' : '' %>>
+                        최종 합격
+                    </option>
+
+                    <option value="불합격" <%=data && data.status==='불합격' ? 'selected' : '' %>>
+                        불합격
+                    </option>
+
+                    <option value="지원 취소" <%=data && data.status==='지원 취소' ? 'selected' : '' %>>
+                        지원 취소
+                    </option>
+                </select>
+            </div>
+            <h2>비교항목</h2>
+
+            <div class="check-grid">
+                <label>
+                    <input type="checkbox" name="compare_salary" <%=data && data.compare_salary==1 ? 'checked' : '' %>>
+                    연봉
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_industry" <%=data && data.compare_industry==1 ? 'checked' : ''
+                        %>>
+                    업종
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_job" <%=data && data.compare_job==1 ? 'checked' : '' %>>
+                    직무
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_qualifications" <%=data && data.compare_qualifications==1
+                        ? 'checked' : '' %>>
+                    자격요건
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_advantage" <%=data && data.compare_advantage==1 ? 'checked'
+                        : '' %>>
+                    우대사항
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_area" <%=data && data.compare_area==1 ? 'checked' : '' %>>
+                    근무지역
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_type" <%=data && data.compare_type==1 ? 'checked' : '' %>>
+                    근무형태
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_benefits" <%=data && data.compare_benefits==1 ? 'checked' : ''
+                        %>>
+                    복리후생
+                </label>
+                <label>
+                    <input type="checkbox" name="compare_status" <%=data && data.compare_status==1 ? 'checked' : '' %>>
+                    진행상태
+                </label>
+            </div>
+
+            <div class="button-area">
+                <button type="button" class="btn-secondary" onclick="window.location.href='/'">
+                    취소
+                </button>
+                <button type="submit">
+                    저장
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

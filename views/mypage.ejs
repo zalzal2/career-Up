@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>메인</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/resume.css">
+</head>
+<script>
+    function addCareer() {
+
+        document.getElementById('careerContainer')
+            .insertAdjacentHTML(
+                'beforeend',
+                `<div class="career-row row">
+                    <input type="text" name="company_name[]" placeholder="회사명">
+                    <input type="text" name="position[]" placeholder="직무">
+                    <input type="month" name="start_date[]">
+                    <input type="month" name="end_Date[]">
+                    <textarea name="description[]" class="desc-textarea" placeholder="담당 업무"></textarea>
+                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">
+                        삭제
+                    </button>
+                </div>`
+            );
+    }
+
+    function addLicense() {
+
+        document.getElementById('licenseContainer')
+            .insertAdjacentHTML(
+                'beforeend',
+                `<div class="license-row row">
+                    <input type="text" name="certificate_name[]" placeholder="자격증명">
+                    <input type="month" name="certificate_date[]">
+                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">
+                        삭제
+                    </button>
+                </div>`
+            );
+    }
+
+    function addLanguage() {
+
+        document.getElementById('languageContainer')
+            .insertAdjacentHTML(
+                'beforeend',
+                `<div class="language-row row">
+                    <input type="text" name="language_name[]" placeholder="자격증명">
+                    <input type="text" name="score[]" placeholder="점수">
+                    <input type="month" name="acquired_date[]">
+                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">
+                        삭제
+                    </button>
+                </div>`
+            );
+    }
+
+    function addEducation() {
+
+        document.getElementById('EducationContainer')
+            .insertAdjacentHTML(
+                'beforeend',
+                `<div class="educations-row row">
+                    <input type="text" name="school_name[]" placeholder="학교명">
+                    <input type="month" name="start_date[]">
+                    <input type="month" name="end_Date[]">
+                    <input type="text" name="position[]" placeholder="전공">
+                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">
+                        삭제
+                    </button>
+                </div>`
+            );
+    }
+
+    function removeRow(btn) {
+        const row = btn.closest('.row');
+        const parent = row.parentElement;
+
+        row.remove();
+    }
+
+    const form = document.getElementById('mypageForm');
+    const btn = document.getElementById('saveBtn');
+
+    form.addEventListener('submit', () => {
+
+        // 이미 실행 중이면 차단
+        if (btn.disabled) return;
+
+        btn.disabled = true;
+        btn.innerText = "저장중...";
+    });
+
+    document.getElementById('requestId').value =
+        crypto.randomUUID();
+
+</script>
+
+<body class="my">
+
+    <%- include('includes/header') %>
+        <%- include('includes/navbar') %>
+
+            <div class="container">
+                <section class="main">
+                    <form id="mypageForm" method="post" action="/mypage">
+                        <input type="hidden" name="requestId" id="requestId">
+                        <div class="form-group">
+                            <h3>학력</h3>
+                            <label>최종 학력</label>
+                            <select name="education_level">
+                                <option value="highschool" <%=detail?.education_level==='highschool' ? 'selected' : ''
+                                    %>>
+                                    고교 졸업 이하
+                                </option>
+
+                                <option value="college" <%=detail?.education_level==='college' ? 'selected' : '' %>>
+                                    대학 졸업(2,3년제)
+                                </option>
+
+                                <option value="university" <%=detail?.education_level==='university' ? 'selected' : ''
+                                    %>>
+                                    대학교 졸업(4년제)
+                                </option>
+
+                                <option value="master" <%=detail?.education_level==='master' ? 'selected' : '' %>>
+                                    대학원 석사 졸업
+                                </option>
+
+                                <option value="doctor" <%=detail?.education_level==='doctor' ? 'selected' : '' %>>
+                                    대학원 박사 졸업
+                                </option>
+
+                                <option value="postdoctor" <%=detail?.education_level==='postdoctor' ? 'selected' : ''
+                                    %>>
+                                    박사 졸업 이상
+                                </option>
+                            </select>
+                            <div id="EducationContainer">
+
+                                <div class="education-header row">
+                                    <div>학교명</div>
+                                    <div>입학년월</div>
+                                    <div>졸업년월</div>
+                                    <div>전공</div>
+                                </div>
+
+                                <% if (educations && educations.length> 0) { %>
+                                    <% educations.forEach(e=> { %>
+                                        <div class="educations-row row">
+                                            <input type="text" name="school_name[]" value="<%= e.school_name %>">
+                                            <input type="month" name="start_date[]" value="<%= e.entrance_date %>">
+                                            <input type="month" name="end_date[]" value="<%= e.graduation_date %>">
+                                            <input type="text" name="major[]" value="<%= e.major %>" placeholder="전공">
+                                            <button type="button" class="btn btn-danger delete-btn"
+                                                onclick="removeRow(this)">
+                                                삭제
+                                            </button>
+                                        </div>
+                                        <% }) %>
+
+                                            <% } else { %>
+
+                                                <!-- DB 없을 때 기본 1개 -->
+                                                <div class="educations-row row">
+                                                    <input type="text" name="school_name[]" placeholder="학교명">
+                                                    <input type="month" name="start_date[]">
+                                                    <input type="month" name="end_Date[]">
+                                                    <input type="text" name="position[]" placeholder="전공">
+                                                </div>
+
+                                                <% } %>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        onclick="addEducation()">
+                                                        추가하기
+                                                    </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h3>경력</h3>
+
+                            <div class="career-header row">
+                                <div>회사명</div>
+                                <div>직무</div>
+                                <div>입사년월</div>
+                                <div>퇴사년월</div>
+                                <div>담당업무</div>
+                            </div>
+                            <div id="careerContainer">
+
+                                <% if (careers && careers.length> 0) { %>
+
+                                    <% careers.forEach(c=> { %>
+                                        <div class="career-row row">
+
+                                            <input type="text" name="company_name[]" value="<%= c.company_name %>"
+                                                placeholder="회사명">
+                                            <input type="text" name="position[]" value="<%= c.position %>"
+                                                placeholder="직무">
+                                            <input type="month" name="start_date[]" value="<%= c.start_date %>">
+                                            <input type="month" name="end_Date[]" value="<%= c.end_Date %>">
+                                            <textarea name="description[]" class="desc-textarea"
+                                                placeholder="담당 업무"></textarea>
+
+
+                                            <button type="button" class="btn btn-danger delete-btn"
+                                                onclick="removeRow(this)">
+                                                삭제
+                                            </button>
+
+                                        </div>
+                                        <% }) %>
+
+                                            <% } else { %>
+
+                                                <!-- DB 없을 때 기본 1개 -->
+                                                <div class="career-row row">
+
+                                                    <input type="text" name="company_name[]" placeholder="회사명">
+                                                    <input type="text" name="position[]" placeholder="직무">
+                                                    <input type="month" name="start_date[]">
+                                                    <input type="month" name="end_Date[]">
+                                                    <textarea name="description[]" class="desc-textarea"
+                                                        placeholder="담당 업무"></textarea>
+
+                                                </div>
+
+                                                <% } %>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        onclick="addCareer()">
+                                                        추가하기
+                                                    </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>희망연봉 </label>
+                            <input type="text" name="expected_salary" value="<%= detail?.expected_salary || '' %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label>희망직무 </label>
+                            <input type="text" name="job_objective" value="<%= detail?.job_objective || '' %>">
+                        </div>
+
+                        <div class="form-group">
+                            <h3>자격증</h3>
+                            <div id="licenseContainer">
+
+                                <% if (certificates && certificates.length> 0) { %>
+
+                                    <% certificates.forEach(c=> { %>
+                                        <div class="license-row row">
+                                            <input type="text" name="certificate_name[]"
+                                                value="<%= c.certificate_name %>">
+                                            <input type="month" name="certificate_date[]"
+                                                value="<%= c.certificate_date %>">
+
+                                            <button type="button" class="btn btn-danger delete-btn"
+                                                onclick="removeRow(this)">
+                                                삭제
+                                            </button>
+                                        </div>
+                                        <% }) %>
+
+                                            <% } else { %>
+
+                                                <div class="license-row row">
+                                                    <input type="text" name="certificate_name[]" placeholder="자격증명">
+                                                    <input type="month" name="certificate_date[]">
+                                                </div>
+
+                                                <% } %>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        onclick="addLicense()">추가하기
+                                                    </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <h3>어학</h3>
+                            <div id="languageContainer">
+                                <% if (languages && languages.length> 0) { %>
+
+                                    <% languages.forEach(l=> { %>
+                                        <div class="language-row row">
+                                            <input type="text" name="language_name[]" value="<%= l.language_name %>">
+                                            <input type="text" name="score[]" value="<%= l.score %>">
+                                            <input type="month" name="acquired_date[]" value="<%= l.acquired_date %>">
+
+                                            <button type="button" class="btn btn-danger delete-btn"
+                                                onclick="removeRow(this)">
+                                                삭제
+                                            </button>
+                                        </div>
+                                        <% }) %>
+
+                                            <% } else { %>
+
+                                                <div class="language-row row">
+                                                    <input type="text" name="language_name[]" placeholder="자격증명">
+                                                    <input type="text" name="score[]" placeholder="점수">
+                                                    <input type="month" name="acquired_date[]">
+                                                </div>
+
+                                                <% } %>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        onclick="addLanguage()">추가하기</button>
+                            </div>
+                        </div>
+
+
+                        <br><br>
+                        <button type="submit" class="btn btn-primary">저장</button>
+                    </form>
+
+                </section>
+            </div>
+
+</body>
+
+</html>

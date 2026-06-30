@@ -1,0 +1,7 @@
+ALTER TABLE user_detail ADD UNIQUE (user_id);
+ALTER TABLE careers MODIFY start_date VARCHAR(7);
+ALTER TABLE careers MODIFY end_Date VARCHAR(7);
+ALTER TABLE certificates MODIFY certificate_date VARCHAR(7);
+ALTER TABLE languages MODIFY acquired_date VARCHAR(7);
+ALTER TABLE user_detail DROP COLUMN education;
+ALTER TABLE user_detail DROP COLUMN major;

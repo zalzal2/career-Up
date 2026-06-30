@@ -1,0 +1,16 @@
+<nav class="header">
+        <a href="/" class="logo">캐리어업</a>
+
+    <% if (user) { %>
+        <div>
+            <span><%= user.name %>님</span>
+            <a href="/logout" class="logout-btn">로그아웃</a>
+        </div>
+    <% } else { %>
+        <div>
+            <a href="/login" class="login-btn">로그인</a>
+            <a href="/register" class="register-btn">회원가입</a>
+        </div>
+    <% } %>
+</nav>
+

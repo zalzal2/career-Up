@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회사 추가</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/company.css">
+</head>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const checkboxes = document.querySelectorAll('.compare-check');
+        const bar = document.getElementById('compareBar');
+        const countText = document.getElementById('compareCount');
+
+        function updateBar() {
+            const checked = document.querySelectorAll('.compare-check:checked');
+
+            countText.innerText = checked.length;
+
+            if (checked.length > 0) {
+                bar.classList.remove('hidden');
+            } else {
+                bar.classList.add('hidden');
+            }
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateBar);
+        });
+
+    });
+</script>
+
+<body>
+    <%- include('../includes/header') %>
+        <%- include('../includes/navbar') %>
+            <form id="compareForm" action="/company/compare" method="GET">
+
+                <div class="card-grid">
+
+                    <% list.forEach(item=> { %>
+                        <div class="card">
+                            <label>
+                                <input type="checkbox" class="compare-check" name="ids" value="<%= item.id %>">
+                                비교 선택
+                            </label>
+
+                            <h2>
+                                <%= item.company_name %>
+                            </h2>
+
+                            <div class="card-body">
+                                <% if (item.job) { %>
+                                    <p>직무: <%= item.job %>
+                                    </p>
+                                    <% } %>
+
+                                        <% if (item.salary) { %>
+                                            <p>연봉: <%= item.salary %>
+                                            </p>
+                                            <% } %>
+                            </div>
+                        </div>
+                        <% }) %>
+
+                </div>
+
+                <div id="compareBar" class="compare-bar hidden">
+                    <span id="compareCount">0</span>개 선택됨
+                    <button type="submit">비교하기</button>
+                </div>
+
+            </form>
+</body>
+
+</html>

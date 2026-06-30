@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회사 추가</title>
+
+    <link rel="stylesheet" href="/css/company.css">
+</head>
+<script>
+    function validateForm() {
+        const company = document.querySelector('input[name="company_name"]').value.trim();
+        const job = document.querySelector('input[name="job"]').value.trim();
+
+        if (!company || !job) {
+            alert("회사명과 직무를 입력해주세요.");
+            return false;
+        }
+
+        return true;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const select = document.getElementById("region");
+
+        // 옵션 생성
+        Object.entries(regionData).forEach(([province, cities]) => {
+
+            const optGroup = document.createElement("optgroup");
+            optGroup.label = province;
+
+            cities.forEach(city => {
+                const opt = document.createElement("option");
+
+                if (city === "전체") {
+                    opt.value = `${province} 전체`;
+                    opt.textContent = `${province} 전체`;
+                } else {
+                    opt.value = `${province} ${city}`;
+                    opt.textContent = `${province} ${city}`;
+                }
+
+                optGroup.appendChild(opt);
+            });
+
+            select.appendChild(optGroup);
+        });
+    });
+</script>
+
+<body>
+
+    <div class="form-container">
+
+        <h1>회사 추가</h1>
+
+        <form action="/company/add" method="post" onsubmit="return validateForm()">
+
+            <div class="input-box">
+
+                <label>회사명</label>
+                <input type="text" name="company_name" required>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>업종</label>
+
+                <select name="industry">
+
+                    <option>IT</option>
+                    <option>금융</option>
+                    <option>제조</option>
+                    <option>서비스</option>
+
+                </select>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>직무</label>
+                <input type="text" name="job" required>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>연봉</label>
+                <input type="text" name="salary">
+
+            </div>
+
+            <div class="input-box">
+
+                <label>근무지역</label>
+
+
+                <select id="region" name="region"></select>
+
+                <script src="/js/region.js"></script>
+
+            </div>
+
+            <div class="input-box">
+
+                <label>근무형태</label>
+
+                <select name="type">
+                    <option>정규직</option>
+                    <option>계약직</option>
+                    <option>인턴</option>
+
+                </select>
+
+            </div>
+
+            <div class="input-box">
+                <label>자격요건</label>
+                <textarea name="qualifications"></textarea>
+
+            </div>
+
+            <div class="input-box">
+                <label>우대사항</label>
+                <textarea name="advantage"></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>복리후생</label>
+                <textarea name="benefit"></textarea>
+
+            </div>
+
+            <div class="input-box">
+                <label>진행상태</label>
+                <select name="status">
+                    <option>지원 전</option>
+                    <option>지원 완료</option>
+                    <option>서류 합격</option>
+                    <option>과제/코딩테스트 합격</option>
+                    <option>1차 면접 합격</option>
+                    <option>2차 면접 합격</option>
+                    <option>3차 면접 합격</option>
+                    <option>최종 합격</option>
+                    <option>불합격</option>
+                    <option>지원 취소</option>
+                </select>
+            </div>
+            <h2>비교항목</h2>
+
+            <div class="check-grid">
+                <label><input type="checkbox" name="compare_salary"> 연봉</label>
+                <label><input type="checkbox" name="compare_industry"> 업종</label>
+                <label><input type="checkbox" name="compare_job"> 직무</label>
+                <label><input type="checkbox" name="compare_qualifications"> 자격요건</label>
+                <label><input type="checkbox" name="compare_advantage"> 우대사항</label>
+                <label><input type="checkbox" name="compare_area"> 근무지역</label>
+                <label><input type="checkbox" name="compare_type"> 근무형태</label>
+                <label><input type="checkbox" name="compare_benefits"> 복리후생</label>
+                <label><input type="checkbox" name="compare_status"> 진행상태</label>
+            </div>
+
+            <div class="button-area">
+                <button type="button" class="btn-secondary" onclick="window.location.href='/'">
+                    취소
+                </button>
+                <button type="submit">
+                    저장
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

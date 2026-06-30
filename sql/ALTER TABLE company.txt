@@ -1,0 +1,19 @@
+ALTER TABLE company
+ADD COLUMN user_id INT,
+ADD CONSTRAINT fk_user
+FOREIGN KEY (user_id) REFERENCES users(id)
+ON DELETE CASCADE;
+
+ALTER TABLE company
+ADD COLUMN compare_salary TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_job TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_qualifications TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_advantage TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_area TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_type TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_benefits TINYINT(1) DEFAULT 0,
+ADD COLUMN compare_status TINYINT(1) DEFAULT 0;
+
+ALTER TABLE company
+ADD COLUMN industry VARCHAR(50),
+ADD COLUMN compare_industry TINYINT(1) DEFAULT 0;

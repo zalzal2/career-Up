@@ -1,0 +1,19 @@
+CREATE TABLE Company (
+id INT AUTO_INCREMENT PRIMARY KEY,
+
+company_name VARCHAR(100) NOT NULL,
+job VARCHAR(100) NOT NULL,
+
+qualifications TEXT,
+advantage TEXT,
+
+salary VARCHAR(100),
+area VARCHAR(100),
+type VARCHAR(50),
+benefits TEXT,
+
+status ENUM('지원 전','지원완료','서류합격','면접','최종합격','불합격') DEFAULT '지원 전',
+
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);

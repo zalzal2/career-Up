@@ -1,0 +1,110 @@
+/* 전체 */
+.job-wrapper {
+    width: 100%;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+/* 헤더 */
+.job-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.job-hero h1 {
+    font-size: 28px;
+    /* 👈 기존보다 확 줄임 */
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.job-hero p {
+    font-size: 15px;
+    color: #6b7280;
+}
+
+/* 카드 그리드 */
+.job-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+/* 카드 */
+.job-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 20px;
+    border-radius: 14px;
+
+    background: #fff;
+    border: 1px solid #e5e7eb;
+
+    text-decoration: none;
+    color: inherit;
+
+    transition: 0.2s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* 로고 */
+.job-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* 텍스트 */
+.job-info h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #111827;
+}
+
+.job-info p {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+/* 화살표 */
+.job-arrow {
+    margin-left: auto;
+    font-size: 18px;
+    color: #9ca3af;
+    transition: 0.2s;
+}
+
+.job-card:hover .job-arrow {
+    transform: translateX(6px);
+    color: #2563eb;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .job-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .job-hero h1 {
+        font-size: 22px;
+    }
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 30px 0 15px;
+    color: #374151;
+    padding-left: 6px;
+    border-left: 4px solid #2563eb;
+}

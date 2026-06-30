@@ -1,0 +1,12 @@
+CREATE TABLE educations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+
+    school_name VARCHAR(100),
+    major VARCHAR(100),
+
+    entrance_date VARCHAR(7),
+    graduation_date VARCHAR(7),
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

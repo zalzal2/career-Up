@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>메인</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/resume.css">
+</head>
+<script>
+    function addRow(tableId, html) {
+        document.querySelector(`#${tableId} tbody`)
+            .insertAdjacentHTML('beforeend', html);
+    }
+
+    function addEducation() {
+        addRow("eduTable", `
+            <tr>
+                <td><input type="checkbox" class="row-check"></td>
+                <td><input type="text" name="school_name[]"></td>
+                <td><input type="month" name="entrance_date[]"></td>
+                <td><input type="month" name="graduation_date[]"></td>
+                <td><input type="text" name="major[]"></td>
+            </tr>
+    `);
+    }
+
+    function addCareer() {
+        addRow("careerTable", `
+        <tr>
+            <td><input type="checkbox" class="row-check"></td>
+            <td><input type="text" name="company_name[]"></td>
+            <td>
+                <input type="month" name="start_date[]"> ~
+                <input type="month" name="end_date[]">
+            </td>
+            <td><input type="text" name="position[]"></td>
+        </tr>
+
+    `);
+    }
+
+    function addCertificate() {
+        document.getElementById('certContainer').insertAdjacentHTML('beforeend', `
+        <div class="row-line">
+            <input type="text" name="certificate_name[]" placeholder="자격증명">
+            <input type="month" name="certificate_date[]">
+             <button type="button" class="btn btn-danger" onclick="removeRow(this)">삭제</button>
+        </div>
+
+    `);
+    }
+
+    function addLanguage() {
+        document.getElementById('langContainer').insertAdjacentHTML('beforeend', `
+        <div class="row-line">
+            <input type="text" name="language_name[]" placeholder="어학명">
+            <input type="text" name="score[]" placeholder="점수">
+            <input type="month" name="acquired_date[]">
+            <button type="button" class="btn btn-danger" onclick="removeRow(this)">삭제</button>
+        </div>
+
+    `);
+    }
+
+    function addCover() {
+        document.getElementById('coverContainer').insertAdjacentHTML('beforeend', `
+        <div class="cover-box">
+            <input type="text" name="cover_title[]" placeholder="제목">
+            <textarea name="cover_content[]" placeholder="내용"></textarea>
+            <button type="button" class="btn btn-danger" onclick="removeRow(this)">삭제</button>
+        </div>
+    `);
+    }
+
+    function removeRow(btn) {
+        const el = btn.closest('.cover-box') || btn.closest('.row-line') || btn.closest('tr');
+        if (el) el.remove();
+    }
+
+    function deleteEducation() {
+        document.querySelectorAll('#eduTableBody .row-check:checked')
+            .forEach(cb => cb.closest('tr').remove());
+    }
+
+    function deleteCareer() {
+        document.querySelectorAll('#careerTableBody .row-check:checked')
+            .forEach(cb => cb.closest('tr').remove());
+    }
+
+</script>
+
+<body class="resume-edit">
+
+    <% if (success) { %>
+        <script>
+            alert("저장되었습니다.");
+        </script>
+        <% } %>
+
+            <%- include('includes/header') %>
+                <%- include('includes/navbar') %>
+                    <form method="post" action="/resume-edit">
+                        <div class="resume-wrapper">
+                            <div class="resume-actions">
+                                <button type="button" class="btn-secondary" onclick="location.href='/'">
+                                    취소
+                                </button>
+                                <button type="submit" class="btn-primary">
+                                    저장하기
+                                </button>
+                            </div>
+                            <!-- LEFT SIDEBAR -->
+                            <aside class="resume-left">
+
+                                <div class="profile-box">
+
+                                    <div class="profile-image">
+
+                                        <input type="file" id="photo" name="photo" accept="image/*" hidden>
+
+                                        <label for="photo" class="profile-image">
+                                            <img id="preview" src="<%= photo %>">
+                                        </label>
+
+                                    </div>
+
+                                    <div class="name-row">
+                                        <h2>
+                                            <%= user?.name || '' %>
+                                        </h2>
+
+                                        <span class="gender">
+                                            <%= user?.sex || '-' %>
+                                        </span>
+                                    </div>
+
+                                    <p class="birth">
+                                        <%= birthText || '-' %>
+                                    </p>
+
+                                </div>
+
+                                <div class="info-box">
+
+                                    <div class="info-item">
+                                        <div class="info-title">Email</div>
+                                        <div class="info-value">
+                                            <%= user?.email || '미입력' %>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-title">Phone</div>
+                                        <div class="info-value">
+                                            <%= user?.number || '미입력' %>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-title">Address</div>
+                                        <div class="info-value">
+                                            <%= user?.address || '미입력' %>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </aside>
+                            <!-- RIGHT CONTENT -->
+                            <main class="resume-right">
+
+                                <section class="resume-card">
+                                    <!-- 학력 -->
+                                    <h3>학력</h3>
+                                    <label>최종 학력</label>
+                                    <select name="education_level">
+                                        <option value="highschool" <%=detail?.education_level==='highschool'
+                                            ? 'selected' : '' %>>
+                                            고교 졸업 이하
+                                        </option>
+
+                                        <option value="college" <%=detail?.education_level==='college' ? 'selected' : ''
+                                            %>>
+                                            대학 졸업(2,3년제)
+                                        </option>
+
+                                        <option value="university" <%=detail?.education_level==='university'
+                                            ? 'selected' : '' %>>
+                                            대학교 졸업(4년제)
+                                        </option>
+
+                                        <option value="master" <%=detail?.education_level==='master' ? 'selected' : ''
+                                            %>>
+                                            대학원 석사 졸업
+                                        </option>
+
+                                        <option value="doctor" <%=detail?.education_level==='doctor' ? 'selected' : ''
+                                            %>>
+                                            대학원 박사 졸업
+                                        </option>
+
+                                        <option value="postdoctor" <%=detail?.education_level==='postdoctor'
+                                            ? 'selected' : '' %>>
+                                            박사 졸업 이상
+                                        </option>
+                                    </select>
+                                    <div>
+                                        <button type="button" class="btn btn-danger" onclick="deleteEducation()">
+                                            선택 삭제
+                                        </button>
+                                        <table class="resume-table" id="eduTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>선택</th>
+                                                    <th>학교명</th>
+                                                    <th>입학년월</th>
+                                                    <th>졸업년월</th>
+                                                    <th>전공</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="eduTableBody">
+
+                                                <% if (educations && educations.length> 0) { %>
+                                                    <% educations.forEach(e=> { %>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="checkbox" class="row-check">
+                                                            </td>
+                                                            <td><input type="text" name="school_name[]"
+                                                                    value="<%= e.school_name %>">
+                                                            </td>
+                                                            <td><input type="month" name="entrance_date[]"
+                                                                    value="<%= e.entrance_date %>">
+                                                            </td>
+                                                            <td><input type="month" name="graduation_date[]"
+                                                                    value="<%= e.graduation_date %>"></td>
+                                                            <td><input type="text" name="major[]"
+                                                                    value="<%= e.major %>"></td>
+                                                        </tr>
+                                                        <% }) %>
+                                                            <% } else { %>
+                                                                <tr>
+                                                                    <td><input type="checkbox" class="row-check"></td>
+                                                                    <td><input type="text" name="school_name[]"></td>
+                                                                    <td><input type="month" name="entrance_date[]"></td>
+                                                                    <td><input type="month" name="graduation_date[]">
+                                                                    </td>
+                                                                    <td><input type="text" name="major[]"></td>
+                                                                </tr>
+                                                                <% } %>
+
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-secondary" onclick="addEducation()">
+                                            + 추가하기
+                                        </button>
+                                    </div>
+                                </section>
+
+                                <!-- 경력 -->
+                                <section class="resume-card">
+                                    <h3>경력</h3>
+                                    <button type="button" class="btn btn-danger" onclick="deleteCareer()">
+                                        선택 삭제
+                                    </button>
+                                    <table class="resume-table" id="careerTable">
+                                        <thead>
+                                            <tr>
+                                                <th>선택</th>
+                                                <th>회사명</th>
+                                                <th>재직기간</th>
+                                                <th>직무</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="careerTableBody">
+                                            <% if (careers && careers.length> 0) { %>
+
+                                                <% careers.forEach(c=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <input type="checkbox" class="row-check">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="company_name[]"
+                                                                value="<%= c.company_name %>">
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="month" name="start_date[]"
+                                                                value="<%= c.start_date %>">
+                                                            ~
+                                                            <input type="month" name="end_date[]"
+                                                                value="<%= c.end_date %>">
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" name="position[]"
+                                                                value="<%= c.position %>">
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+
+                                                        <% } else { %>
+
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="checkbox" class="row-check">
+                                                                </td>
+                                                                <td><input type="text" name="company_name[]"></td>
+
+                                                                <td>
+                                                                    <input type="month" name="start_date[]">
+                                                                    ~
+                                                                    <input type="month" name="end_date[]">
+                                                                </td>
+
+                                                                <td><input type="text" name="position[]"></td>
+                                                            </tr>
+
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-secondary" onclick="addCareer()">
+                                        + 추가하기
+                                    </button>
+                                </section>
+
+                                <!-- 자격증 -->
+                                <section class="resume-card">
+                                    <h3>자격증</h3>
+                                    <div id="certContainer">
+                                        <% if (certificates && certificates.length> 0) { %>
+
+                                            <% certificates.forEach(c=> { %>
+
+                                                <input type="text" name="certificate_name[]"
+                                                    value="<%= c.certificate_name %>">
+
+                                                <input type="month" name="certificate_date[]"
+                                                    value="<%= c.certificate_date %>">
+
+                                                <% }) %>
+
+                                                    <% } else { %>
+                                                        <div class="row-line">
+                                                            <input type="text" name="certificate_name[]"
+                                                                placeholder="자격증명">
+                                                            <input type="month" name="certificate_date[]">
+                                                        </div>
+
+                                                        <% } %>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                onclick="addCertificate()">
+                                                                + 추가하기
+                                                            </button>
+                                    </div>
+
+                                </section>
+
+                                <!-- 어학 -->
+                                <section class="resume-card">
+                                    <h3>어학</h3>
+                                    <div id="langContainer">
+                                        <% if (languages && languages.length> 0) { %>
+
+                                            <% languages.forEach(l=> { %>
+
+                                                <input type="text" name="language_name[]"
+                                                    value="<%= l.language_name %>">
+
+                                                <input type="text" name="score[]" value="<%= l.score %>">
+
+                                                <input type="month" name="acquired_date[]"
+                                                    value="<%= l.acquired_date %>">
+
+                                                <% }) %>
+
+                                                    <% } else { %>
+
+                                                        <div class="row-line">
+                                                            <input type="text" name="language_name[]" placeholder="어학명">
+
+                                                            <input type="text" name="score[]" placeholder="점수">
+
+                                                            <input type="month" name="acquired_date[]">
+                                                        </div>
+
+                                                        <% } %>
+                                                            <button type="button" class="btn btn-secondary"
+                                                                onclick="addLanguage()">
+                                                                + 추가하기
+                                                            </button>
+                                    </div>
+
+                                </section>
+
+                                <section class="resume-card">
+                                    <h3>자기소개서</h3>
+
+                                    <div id="coverContainer">
+
+                                        <% if (coverLetters && coverLetters.length> 0) { %>
+                                            <% coverLetters.forEach(c=> { %>
+                                                <div class="cover-box">
+                                                    <input type="text" name="cover_title[]" value="<%= c.title %>"
+                                                        placeholder="제목">
+
+                                                    <textarea name="cover_content[]"
+                                                        placeholder="내용"><%= c.content %></textarea>
+                                                </div>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        <div class="cover-box">
+                                                            <input type="text" name="cover_title[]" placeholder="제목">
+                                                            <textarea name="cover_content[]"
+                                                                placeholder="내용"></textarea>
+                                                        </div>
+                                                        <% } %>
+
+                                    </div>
+
+                                    <button type="button" class="btn btn-secondary" onclick="addCover()">
+                                        + 추가하기
+                                    </button>
+                                </section>
+                            </main>
+                        </div>
+                    </form>
+</body>
+<script>
+    const input = document.getElementById('photo');
+
+    input.addEventListener('change', async function () {
+
+        const file = this.files[0];
+
+        if (!file) return;
+
+        // 미리보기
+        document.getElementById('preview').src =
+            URL.createObjectURL(file);
+
+        // 업로드
+        const formData = new FormData();
+
+        formData.append('photo', file);
+
+        const response = await fetch('/profile/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+
+            document.getElementById('preview').src = result.image;
+
+            alert('사진이 저장되었습니다.');
+
+        } else {
+
+            alert('업로드 실패');
+
+        }
+
+    });
+</script>
+
+</html>

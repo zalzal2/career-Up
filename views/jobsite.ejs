@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>구직 사이트</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/jobsite.css">
+</head>
+
+<body>
+
+    <%- include('includes/header') %>
+        <%- include('includes/navbar') %>
+
+            <div class="job-wrapper">
+
+                <div class="job-hero">
+                    <h1>구직 사이트</h1>
+                    <p>원하는 사이트에서 채용공고를 바로 확인하세요</p>
+                </div>
+
+                <div class="job-grid">
+
+                    <a href="https://www.saramin.co.kr" target="_blank" class="job-card">
+                        <img src="/images/jobsite/saramin.png" class="job-logo">
+                        <div class="job-info">
+                            <h2>사람인</h2>
+                            <p>국내 대표 채용 플랫폼</p>
+                        </div>
+                        <span class="job-arrow">→</span>
+                    </a>
+
+                    <a href="https://www.jobkorea.co.kr" target="_blank" class="job-card">
+                        <img src="/images/jobsite/jobkorea.png" class="job-logo">
+                        <div class="job-info">
+                            <h2>잡코리아</h2>
+                            <p>다양한 기업 채용정보</p>
+                        </div>
+                        <span class="job-arrow">→</span>
+                    </a>
+
+                    <a href="https://www.linkedin.com/jobs/" target="_blank" class="job-card">
+                        <img src="/images/jobsite/linkedin.png" class="job-logo">
+                        <div class="job-info">
+                            <h2>LinkedIn</h2>
+                            <p>글로벌 / 해외 취업</p>
+                        </div>
+                        <span class="job-arrow">→</span>
+                    </a>
+
+                    <a href="https://www.wanted.co.kr" target="_blank" class="job-card">
+                        <img src="/images/jobsite/wanted.png" class="job-logo">
+                        <div class="job-info">
+                            <h2>Wanted</h2>
+                            <p>IT 중심 채용 플랫폼</p>
+                        </div>
+                        <span class="job-arrow">→</span>
+                    </a>
+
+                </div>
+            </div>
+
+</body>
+
+</html>

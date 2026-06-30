@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회사 추가</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/company.css">
+</head>
+
+<body>
+    <%- include('../includes/header') %>
+        <%- include('../includes/navbar') %>
+            <div class="compare-grid">
+
+                <% list.forEach(item=> { %>
+
+                    <div class="compare-card">
+
+                        <h2>
+                            <%= item.company_name %>
+                        </h2>
+
+                        <div class="row">
+                            <span>업종</span>
+                            <span>
+                                <%= item.industry %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>직무</span>
+                            <span>
+                                <%= item.job %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>연봉</span>
+                            <span>
+                                <%= item.salary %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>지역</span>
+                            <span>
+                                <%= item.area %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>근무형태</span>
+                            <span>
+                                <%= item.type %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>자격요건</span>
+                            <span>
+                                <%= item.qualifications %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>우대사항</span>
+                            <span>
+                                <%= item.advantage %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>복지</span>
+                            <span>
+                                <%= item.benefits %>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <span>상태</span>
+                            <span>
+                                <%= item.status %>
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <% }) %>
+
+
+            </div>
+</body>
+
+</html>

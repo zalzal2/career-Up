@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>메인</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <%- include('includes/header') %>
+        <%- include('includes/navbar') %>
+
+            <div class="container">
+                <section class="main">
+
+                    <div class="profile-wrap">
+
+                        <div class="profile-card">
+
+                            <h2>
+                                <%= user.name %> 님
+                            </h2>
+
+                            <div class="info-item">
+                                <strong>학력</strong>
+                                <p>
+                                    <%= detail.educationText %>
+                                </p>
+                            </div>
+
+                            <div class="info-item">
+                                <strong>희망 직무</strong>
+                                <p>
+                                    <%= detail?.job_objective?.trim() || '등록된 정보가 없습니다.' %>
+                                </p>
+                            </div>
+
+                            <div class="info-item">
+                                <strong>자격증</strong>
+                                <p>
+                                    <% if(certificates.length> 0){ %>
+                                        <% certificates.forEach(cert=> { %>
+                                            <%= cert.certificate_name %><br>
+                                                <% }) %>
+                                                    <% } else { %>
+                                                        등록된 자격증이 없습니다.
+                                                        <% } %>
+                                </p>
+                            </div>
+
+                            <div class="info-item">
+                                <strong>어학</strong>
+                                <p>
+                                    <% if(languages.length> 0){ %>
+                                        <% languages.forEach(lang=> { %>
+                                            <%= lang.language_name %>
+                                                <% if(lang.score){ %>
+                                                    (<%= lang.score %>)
+                                                        <% } %>
+                                                            <br>
+                                                            <% }) %>
+                                                                <% } else { %>
+                                                                    등록된 어학 정보가 없습니다.
+                                                                    <% } %>
+                                </p>
+                            </div>
+
+                            <div class="info-item">
+                                <strong>경력</strong>
+                                <p>
+                                    <% if(careers.length> 0){ %>
+                                        <% careers.forEach(career=> { %>
+                                            <%= career.company_name %> -
+                                                <%= career.position %><br>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            신입
+                                                            <% } %>
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="side-buttons">
+                            <button onclick="location.href='/resume-edit'">이력서 작성</button>
+                            <button onclick="location.href='/mypage'">정보 추가</button>
+                        </div>
+
+                    </div>
+
+                    <button class="company-btn" onclick="location.href='/company/add'">
+                        회사 추가하기
+                    </button>
+
+                </section>
+            </div>
+            <div class="card-grid">
+
+                <% list.forEach(item=> { %>
+
+                    <div class="card">
+
+                        <!-- 회사명 (필수) -->
+                        <div class="card-header">
+                            <h2>
+                                <%= item.company_name %>
+                            </h2>
+                        </div>
+
+                        <!-- 내용 -->
+                        <div class="card-body">
+
+                            <% fields.forEach(f=> { %>
+
+                                <% if (item[f.compare]==1) { %>
+                                    <div class="row">
+                                        <span class="label">
+                                            <%= f.label %>
+                                        </span>
+                                        <span class="value">
+                                            <%= item[f.key] %>
+                                        </span>
+                                    </div>
+                                    <% } %>
+
+                                        <% }) %>
+
+                                            <!-- 수정 버튼 -->
+                                            <div class="card-footer">
+                                                <a href="/company/edit/<%= item.id %>" class="edit-btn">
+                                                    수정하기
+                                                </a>
+                                                <form action="/company/delete/<%= item.id %>" method="POST"
+                                                    onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display:inline;">
+
+                                                    <button type="submit" class="delete-btn">
+                                                        삭제
+                                                    </button>
+                                                </form>
+                                            </div>
+
+                        </div>
+
+                    </div>
+                    <% }) %>
+            </div>
+
+</body>
+
+</html>
