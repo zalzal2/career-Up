@@ -40,6 +40,7 @@ router.get('/mypage', isLogin, async (req, res) => {
         [userId]
     );
 
+    // 5. 학력
     const [educations] = await db.query(
         'SELECT * FROM educations WHERE user_id=?',
         [userId]
@@ -223,10 +224,12 @@ router.post('/mypage', async (req, res) => {
         ]);
     }
 
+    // ========================
+    // 5. educations
+    // ========================
     await db.query(
-        'DELETE FROM educations WHERE user_id=?',
-        [userId]
-    );
+        'DELETE FROM educations WHERE user_id=?', [userId]);
+
     const sql5 = `
         INSERT INTO educations
         (user_id, school_name, entrance_date, graduation_date, major)
@@ -256,7 +259,6 @@ router.post('/mypage', async (req, res) => {
             major || null
         ]);
     }
-
     res.redirect('/');
 });
 

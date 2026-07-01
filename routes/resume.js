@@ -315,10 +315,11 @@ router.post('/resume-edit', async (req, res) => {
         ]);
     }
 
+    // ========================
+    // 5. educations
+    // ========================
     await db.query(
-        'DELETE FROM educations WHERE user_id=?',
-        [userId]
-    );
+        'DELETE FROM educations WHERE user_id=?', [userId]);
     const sql5 = `
             INSERT INTO educations
             (user_id, school_name, entrance_date, graduation_date, major)

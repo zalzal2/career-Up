@@ -20,8 +20,7 @@ router.get('/company/add', isLogin, async (req, res) => {
     if (!user) {
         return res.redirect('/login');
     }
-
-    // 1. 유저 기본정보 (고정)
+    // 1. 기본 정보
     const [userRows] = await db.query(
         'SELECT name, sex, birth, email FROM users WHERE id=?',
         [userId]
