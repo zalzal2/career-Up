@@ -6,7 +6,7 @@ const mysql = require('mysql2');
 const bcrypt = require('bcrypt');
 const pool = mysql.createPool({
     host: 'localhost',
-    user: 'nodeuser',
+    user: 'root',
     password: '0404',
     database: 'careerdb'
 });
@@ -96,12 +96,13 @@ app.post('/register', async (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [user_id, name, hashedPassword, birth, sex, number, email, address]
         );
+
+        res.redirect('/login');
+
     } catch (err) {
         console.error(err);
         res.status(500).send('서버 오류');
     }
-
-    res.redirect('/login');
 });
 
 app.get('/login', (req, res) => {
